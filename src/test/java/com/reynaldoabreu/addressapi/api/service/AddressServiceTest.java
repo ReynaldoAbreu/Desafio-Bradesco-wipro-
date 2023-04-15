@@ -23,7 +23,7 @@ public class AddressServiceTest {
     Repository repository;
 
     @BeforeEach
-    private void setUp(){
+    public void setUp(){
         this.service = new AddressServiceImp(repository);
     }
 

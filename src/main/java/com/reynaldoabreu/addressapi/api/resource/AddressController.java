@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 @RestController
 @RequestMapping("/v1/consulta-endereco")
@@ -23,7 +24,13 @@ public class AddressController {
     private ModelMapper modelMapper;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.OK)
     public AddressDTO create(@RequestBody @Valid AddressDTO dto){
+
+        String cep = dto.getCep();
+        if (cep == null || cep.isEmpty()) {
+            throw new IllegalArgumentException("CEP inválido");
+        }
 
         Address entity = modelMapper.map(dto, Address.class);
         entity = service.save(entity);

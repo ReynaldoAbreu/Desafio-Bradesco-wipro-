@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -13,19 +15,13 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 public class AddressDTO {
 
-    @NotEmpty
+    @NotBlank
     private String cep;
-    @NotEmpty
     private String rua;
-    @NotEmpty
     private String complemento;
-    @NotEmpty
     private String bairro;
-    @NotEmpty
     private String cidade;
-    @NotEmpty
     private String estado;
-    @NotEmpty
     private Double frete;
 
 }
