@@ -1,4 +1,4 @@
-package com.reynaldoabreu.addressapi.resource;
+package com.reynaldoabreu.addressapi.api.service.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reynaldoabreu.addressapi.api.dto.AddressDTO;
@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,11 +38,10 @@ public class AddressControllerTest {
     @MockBean
     AddressService service;
 
-    @Test
-    @DisplayName("Deve Criar um endereço com sucesso")
-    public void createAddressTest() throws Exception {
 
-        String cep = "0000-0000";
+    @DisplayName("Deve Criar um endereço com sucesso")
+    @Test
+    public void createAddressTest() throws Exception {
 
         Address savedAddress = Address.builder()
                 .cep("0000-0000")
@@ -65,7 +65,7 @@ public class AddressControllerTest {
 
         BDDMockito.given(service.save(Mockito.any(Address.class))).willReturn(savedAddress);
 
-        String json = new ObjectMapper().writeValueAsString(cep);
+        String json = new ObjectMapper().writeValueAsString(dto);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .post(ADDRESS_API)
@@ -86,11 +86,23 @@ public class AddressControllerTest {
 
     }
 
+    @DisplayName("Deve lançar erro de validação se o cep não for valido")
     @Test
-    @DisplayName("Deve lançar um erro quando o cep informado for nulo")
-    public void createInvalidAddressTest(){
+    public void saveInvalidAddressTest() throws Exception{
+
+        AddressDTO dto = new AddressDTO();
+
+        String json = new ObjectMapper().writeValueAsString(dto.getCep());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(ADDRESS_API)
+                .contentType( MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest());
 
     }
-
 
 }
