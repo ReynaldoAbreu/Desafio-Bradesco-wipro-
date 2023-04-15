@@ -3,6 +3,7 @@ package com.reynaldoabreu.addressapi.api.resource;
 import com.reynaldoabreu.addressapi.api.dto.AddressDTO;
 import com.reynaldoabreu.addressapi.api.service.AddressService;
 import com.reynaldoabreu.addressapi.entity.Address;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,8 @@ public class AddressController {
 
     @Autowired
     private AddressService service;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping
     public AddressDTO create(@RequestBody String cep){
@@ -23,16 +26,7 @@ public class AddressController {
 
         Address entity = service.save(Address.builder().cep(dto.getCep()).build());
 
-
-        return AddressDTO.builder()
-                .cep(entity.getCep())
-                .rua(entity.getRua())
-                .complemento(entity.getComplemento())
-                .bairro(entity.getBairro())
-                .cidade(entity.getCidade())
-                .estado(entity.getEstado())
-                .frete(entity.getFrete())
-                .build();
+        return modelMapper.map(entity, AddressDTO.class);
 
     }
 
