@@ -23,20 +23,24 @@ public class AddressController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @GetMapping
+    public String status(){
+
+        return "ok";
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public AddressDTO create(@RequestBody @Valid AddressDTO dto){
-
-        String cep = dto.getCep();
-        if (cep == null || cep.isEmpty()) {
+    public AddressDTO create(@RequestBody @Valid AddressDTO dto) throws Exception {
+        if (dto.getCep() == null || dto.getCep().isEmpty()) {
             throw new IllegalArgumentException("CEP inválido");
         }
 
-        Address entity = modelMapper.map(dto, Address.class);
+        Address entity = new Address();
+        entity.setCep(dto.getCep());
         entity = service.save(entity);
 
         return modelMapper.map(entity, AddressDTO.class);
-
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
