@@ -8,9 +8,10 @@ import java.util.List;
 public class ApiErrors {
 
     private List<String> errors;
+
     public ApiErrors(BindingResult bindingResult) {
         this.errors = new ArrayList<>();
-        bindingResult.getAllErrors().forEach(error -> this.errors.add(error.getDefaultMessage()));
+        bindingResult.getAllErrors().forEach( error -> this.errors.add(error.getDefaultMessage())  );
 
     }
 

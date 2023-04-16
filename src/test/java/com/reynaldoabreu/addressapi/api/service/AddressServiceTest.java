@@ -7,17 +7,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.ByteArrayInputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 public class AddressServiceTest {
     AddressService service;
+
+    @Mock
+    private URLConnection mockConnection;
 
     @MockBean
     Repository repository;
@@ -29,10 +40,10 @@ public class AddressServiceTest {
 
     @DisplayName("Deve salvar um endereço com sucesso")
     @Test
-    public void saveAddressTest() throws Exception {
+    public void findAddressTest() throws Exception {
 
         Address address = Address.builder()
-                .cep("0000-0000")
+                .cep("03374001")
                 .rua("ouvidor")
                 .complemento("lado-par")
                 .bairro("centro")
@@ -41,8 +52,8 @@ public class AddressServiceTest {
                 .frete(1.0)
                 .build();
 
-        Mockito.when( repository.save(address) ).thenReturn(Address.builder()
-                .cep("0000-0000")
+        when( repository.save(address) ).thenReturn(Address.builder()
+                .cep("03374001")
                 .rua("ouvidor")
                 .complemento("lado-par")
                 .bairro("centro")
@@ -53,7 +64,7 @@ public class AddressServiceTest {
 
         Address savedAddress = service.save(address);
 
-        assertThat(savedAddress.getCep()).isEqualTo("0000-0000");
+        assertThat(savedAddress.getCep()).isEqualTo("03374001");
         assertThat(savedAddress.getRua()).isEqualTo("ouvidor");
         assertThat(savedAddress.getComplemento()).isEqualTo("lado-par");
         assertThat(savedAddress.getBairro()).isEqualTo("centro");
@@ -62,6 +73,5 @@ public class AddressServiceTest {
         assertThat(savedAddress.getFrete()).isEqualTo(1.0);
 
     }
-
 
 }

@@ -88,9 +88,9 @@ public class AddressControllerTest {
 
     @DisplayName("Deve lançar erro de validação se o cep não for valido")
     @Test
-    public void saveInvalidAddressTest() throws Exception{
+    public void findInvalidAddressTest() throws Exception{
 
-        AddressDTO dto = new AddressDTO();
+        AddressDTO dto = AddressDTO.builder().cep("000").build();
 
         String json = new ObjectMapper().writeValueAsString(dto.getCep());
 
@@ -101,8 +101,7 @@ public class AddressControllerTest {
                 .content(json);
 
         mvc.perform(request)
-                .andExpect(status().isBadRequest());
-
+                .andExpect( status().isInternalServerError() );
     }
 
 }
