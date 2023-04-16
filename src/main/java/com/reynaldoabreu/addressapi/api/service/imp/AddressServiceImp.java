@@ -25,12 +25,12 @@ public class AddressServiceImp implements AddressService {
         this.repository = repository;
     }
 
-     public Address save(Address address) throws Exception {
+      public Address save(Address address){
         try {
-            return addressSearch(address);
+            return repository.save(calculaFrete(address));
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new Exception("Erro ao buscar endereço", ex);
+            
+            throw new AddressNotFoundException("Erro ao buscar endereço: cep invalido ou não existente");
         }
     }
 
