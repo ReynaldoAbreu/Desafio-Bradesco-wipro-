@@ -6,6 +6,7 @@ um determinado CEP. O contrato da API deve ser conforme especificado abaixo:
 
 
 POST v1/consulta-endereco
+
 REQUEST
 {
 "cep": "01001000"
@@ -31,12 +32,19 @@ para o cliente.
 
 
 Requisitos para o desenvolvimento:
+
 Java 11
+
 Spring boot
+
 API REST Template
+
 Documentação Swagger
+
 Testes unitários JUnit5
+
 Testes automatizados utilizando cucumber
+
 Você deve criar um repositório publico no GIT e colocar o projeto nele. Lembre-se de
 utilizar as regras de controle de versionamento! Sua entrega deve ser o LINK para o
 repositório criado no GIT. Boa sorte!
