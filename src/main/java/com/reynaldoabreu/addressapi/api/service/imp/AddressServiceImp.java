@@ -29,7 +29,7 @@ public class AddressServiceImp implements AddressService {
         try {
             return repository.save(calculaFrete(address));
         } catch (Exception ex) {
-           // ex.printStackTrace();
+            ex.printStackTrace();
             throw new AddressNotFoundException("Erro ao buscar endereço: cep invalido ou não existente");
         }
     }
