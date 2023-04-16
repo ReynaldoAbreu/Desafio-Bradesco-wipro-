@@ -8,18 +8,29 @@ um determinado CEP. O contrato da API deve ser conforme especificado abaixo:
 POST v1/consulta-endereco
 
 REQUEST
+
 {
 "cep": "01001000"
 }
+
 RESPONSE HTTP 200
+
 {
+
 "cep": "01001-000",
+
 "rua": "Praça da Sé",
+
 "complemento": "lado ímpar",
+
 "bairro": "Sé",
+
 "cidade": "São Paulo",
+
 "estado": "SP",
+
 "frete": 7.85
+
 }
 
 
