@@ -5,6 +5,7 @@ import com.reynaldoabreu.addressapi.api.exception.AddressNotFoundException;
 import com.reynaldoabreu.addressapi.api.service.AddressService;
 import com.reynaldoabreu.addressapi.entity.Address;
 import com.reynaldoabreu.addressapi.model.repository.AddressExternApi;
+import com.reynaldoabreu.addressapi.model.repository.Region;
 import com.reynaldoabreu.addressapi.model.repository.Repository;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +26,11 @@ public class AddressServiceImp implements AddressService {
         this.repository = repository;
     }
 
-      public Address save(Address address){
+    public Address save(Address address) throws Exception {
         try {
             return repository.save(calculaFrete(address));
         } catch (Exception ex) {
-            
+
             throw new AddressNotFoundException("Erro ao buscar endereço: cep invalido ou não existente");
         }
     }
@@ -62,6 +63,38 @@ public class AddressServiceImp implements AddressService {
 
             return address;
         }
+    }
+
+    public Address calculaFrete(Address address) throws Exception {
+
+        Region region = new Region();
+        String uf = addressSearch(address).getEstado();
+        String regionName = region.getRegionByUF(uf);
+        double frete = 0.0;
+
+        switch (regionName) {
+            case "sudeste":
+                frete = 7.85;
+                break;
+            case "sul":
+                frete = 17.30;
+                break;
+            case "norte":
+                frete = 20.83;
+                break;
+            case "centroOeste":
+                frete = 12.50;
+                break;
+            case "nordeste":
+                frete = 15.98;
+                break;
+            default:
+
+                break;
+        }
+
+        address.setFrete(frete);
+        return address;
     }
 
 }
