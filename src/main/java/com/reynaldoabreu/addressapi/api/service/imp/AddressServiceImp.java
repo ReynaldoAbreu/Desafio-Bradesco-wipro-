@@ -1,6 +1,7 @@
 package com.reynaldoabreu.addressapi.api.service.imp;
 
 import com.google.gson.Gson;
+import com.reynaldoabreu.addressapi.api.exception.AddressNotFoundException;
 import com.reynaldoabreu.addressapi.api.service.AddressService;
 import com.reynaldoabreu.addressapi.entity.Address;
 import com.reynaldoabreu.addressapi.model.repository.AddressExternApi;
@@ -28,8 +29,8 @@ public class AddressServiceImp implements AddressService {
         try {
             return repository.save(calculaFrete(address));
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new IllegalArgumentException("Erro ao buscar endereço", ex);
+           // ex.printStackTrace();
+            throw new AddressNotFoundException("Erro ao buscar endereço: cep invalido ou não existente");
         }
     }
 
