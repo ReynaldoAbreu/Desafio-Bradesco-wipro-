@@ -29,7 +29,7 @@ public class AddressServiceTest {
 
     @DisplayName("Deve salvar um endereço com sucesso")
     @Test
-    public void saveAddressTest(){
+    public void saveAddressTest() throws Exception {
 
         Address address = Address.builder()
                 .cep("0000-0000")
