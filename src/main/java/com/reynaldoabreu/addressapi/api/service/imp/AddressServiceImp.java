@@ -5,13 +5,13 @@ import com.reynaldoabreu.addressapi.api.exception.AddressNotFoundException;
 import com.reynaldoabreu.addressapi.api.service.AddressService;
 import com.reynaldoabreu.addressapi.entity.Address;
 import com.reynaldoabreu.addressapi.model.repository.AddressExternApi;
-import com.reynaldoabreu.addressapi.model.repository.Region;
 import com.reynaldoabreu.addressapi.model.repository.Repository;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -25,19 +25,19 @@ public class AddressServiceImp implements AddressService {
         this.repository = repository;
     }
 
-    public Address save(Address address){
+     public Address save(Address address) throws Exception {
         try {
-            return repository.save(calculaFrete(address));
+            return addressSearch(address);
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new AddressNotFoundException("Erro ao buscar endereço: cep invalido ou não existente");
+            throw new Exception("Erro ao buscar endereço", ex);
         }
     }
 
     public Address addressSearch(Address address) throws Exception {
-
+        System.out.println(address.getCep());
         URL url = new URL("https://viacep.com.br/ws/"+address.getCep()+"/json/");
-
+        System.out.println(url);
         URLConnection connection = url.openConnection();
         try (InputStream is = connection.getInputStream();
              BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
@@ -47,6 +47,8 @@ public class AddressServiceImp implements AddressService {
             while ((cep = reader.readLine()) != null) {
                 jsonCep.append(cep);
             }
+
+            System.out.println(jsonCep);
 
             AddressExternApi addressExternApi = new Gson().fromJson(jsonCep.toString(), AddressExternApi.class);
 
@@ -61,38 +63,5 @@ public class AddressServiceImp implements AddressService {
             return address;
         }
     }
-
-    public Address calculaFrete(Address address) throws Exception {
-
-        Region region = new Region();
-        String uf = addressSearch(address).getEstado();
-        String regionName = region.getRegionByUF(uf);
-        double frete = 0.0;
-
-        switch (regionName) {
-            case "sudeste":
-                frete = 7.85;
-                break;
-            case "sul":
-                frete = 17.30;
-                break;
-            case "norte":
-                frete = 20.83;
-                break;
-            case "centroOeste":
-                frete = 12.50;
-                break;
-            case "nordeste":
-                frete = 15.98;
-                break;
-            default:
-
-                break;
-        }
-
-        address.setFrete(frete);
-       return address;
-    }
-
 
 }
