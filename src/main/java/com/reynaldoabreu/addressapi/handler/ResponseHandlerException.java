@@ -18,7 +18,7 @@ public class ResponseHandlerException extends ResponseEntityExceptionHandler {
     public final ResponseEntity<ExceptionResponse> handlerException(Exception ex, WebRequest web){
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), web.getDescription(false));
-        return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
