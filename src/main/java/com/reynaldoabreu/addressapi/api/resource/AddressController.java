@@ -1,6 +1,7 @@
 package com.reynaldoabreu.addressapi.api.resource;
 
 import com.reynaldoabreu.addressapi.api.dto.AddressDTO;
+import com.reynaldoabreu.addressapi.api.exception.AddressNotFoundException;
 import com.reynaldoabreu.addressapi.api.exception.ApiErrors;
 import com.reynaldoabreu.addressapi.api.service.AddressService;
 import com.reynaldoabreu.addressapi.entity.Address;
@@ -33,7 +34,7 @@ public class AddressController {
     @ResponseStatus(HttpStatus.OK)
     public AddressDTO create(@RequestBody @Valid AddressDTO dto) throws Exception {
         if (dto.getCep() == null || dto.getCep().isEmpty()) {
-            throw new IllegalArgumentException("CEP inválido");
+            throw new AddressNotFoundException("CEP inválido");
         }
 
         Address entity = new Address();

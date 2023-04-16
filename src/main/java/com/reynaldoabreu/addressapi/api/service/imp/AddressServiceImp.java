@@ -1,6 +1,7 @@
 package com.reynaldoabreu.addressapi.api.service.imp;
 
 import com.google.gson.Gson;
+import com.reynaldoabreu.addressapi.api.exception.AddressNotFoundException;
 import com.reynaldoabreu.addressapi.api.service.AddressService;
 import com.reynaldoabreu.addressapi.entity.Address;
 import com.reynaldoabreu.addressapi.model.repository.AddressExternApi;
@@ -24,7 +25,7 @@ public class AddressServiceImp implements AddressService {
         this.repository = repository;
     }
 
-    public Address save(Address address) throws Exception {
+     public Address save(Address address) throws Exception {
         try {
             return addressSearch(address);
         } catch (Exception ex) {
