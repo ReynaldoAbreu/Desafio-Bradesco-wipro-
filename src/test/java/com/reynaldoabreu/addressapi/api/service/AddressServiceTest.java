@@ -27,12 +27,12 @@ public class AddressServiceTest {
         this.service = new AddressServiceImp(repository);
     }
 
-    @DisplayName("Deve salvar um endereço com sucesso")
+    @DisplayName("Deve buscar um endereço com sucesso")
     @Test
-    public void saveAddressTest() throws Exception {
+    public void findAddressTest() throws Exception {
 
         Address address = Address.builder()
-                .cep("0000-0000")
+                .cep("03374001")
                 .rua("ouvidor")
                 .complemento("lado-par")
                 .bairro("centro")
@@ -41,8 +41,8 @@ public class AddressServiceTest {
                 .frete(1.0)
                 .build();
 
-        Mockito.when( repository.save(address) ).thenReturn(Address.builder()
-                .cep("0000-0000")
+        Mockito.when( service.save(address) ).thenReturn(Address.builder()
+                .cep("03374001")
                 .rua("ouvidor")
                 .complemento("lado-par")
                 .bairro("centro")
@@ -53,7 +53,7 @@ public class AddressServiceTest {
 
         Address savedAddress = service.save(address);
 
-        assertThat(savedAddress.getCep()).isEqualTo("0000-0000");
+        assertThat(savedAddress.getCep()).isEqualTo("03374001");
         assertThat(savedAddress.getRua()).isEqualTo("ouvidor");
         assertThat(savedAddress.getComplemento()).isEqualTo("lado-par");
         assertThat(savedAddress.getBairro()).isEqualTo("centro");

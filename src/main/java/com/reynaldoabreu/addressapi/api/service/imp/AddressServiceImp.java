@@ -11,11 +11,9 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 @Service
 public class AddressServiceImp implements AddressService {
@@ -26,18 +24,17 @@ public class AddressServiceImp implements AddressService {
         this.repository = repository;
     }
 
-    public Address save(Address address) throws Exception {
+    public Address save(Address address){
         try {
-            return calculaFrete(address);
+            return repository.save(calculaFrete(address));
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new Exception("Erro ao buscar endereço", ex);
+            throw new IllegalArgumentException("Erro ao buscar endereço", ex);
         }
     }
 
     public Address addressSearch(Address address) throws Exception {
 
-        System.out.println(address.getCep());
         URL url = new URL("https://viacep.com.br/ws/"+address.getCep()+"/json/");
 
         URLConnection connection = url.openConnection();
