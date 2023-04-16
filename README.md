@@ -10,7 +10,9 @@ POST v1/consulta-endereco
 REQUEST
 
 {
+
 "cep": "01001000"
+
 }
 
 RESPONSE HTTP 200
